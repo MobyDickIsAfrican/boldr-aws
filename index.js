@@ -7,8 +7,13 @@ exports.handler = async (event, context) => {
     let response = await client.send(command);
     let data = response.Items
     
-    let userEmail = event["email"]
-    if(userEmail){
+    let userEmail = event["email"];
+    
+    function validateEmail(email){
+        let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+        return regex.test(email);
+  };
+    if(validateEmail(userEmail)){
         // TODO implement
         let found = false;
         for(let item of data){
@@ -33,6 +38,7 @@ exports.handler = async (event, context) => {
             response = {
                     statusCode: 201,
                     body: JSON.stringify("subscription successful"),
+                    headers: {}
                 }
         } else{
             response = {
